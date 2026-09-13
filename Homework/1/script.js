@@ -113,7 +113,7 @@ button7.addEventListener("click", function(){
 
 
 let count = 0
-const counter = document.querySelector("#counter")
+const counter = document.querySelector("#counterDisplay")
 const button8 = document.querySelector("#butt8")
 const button9 = document.querySelector("#butt9")
 
