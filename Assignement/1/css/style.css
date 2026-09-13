@@ -294,14 +294,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   padding-bottom: 1rem;
 }
 .book-cover {
+  width: 100%;
   height: 220px;
   border-radius: 4px;
   margin-bottom: 0.9rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
-  color: var(--paper);
+  object-fit: cover; /* fills the box without distorting the image */
+  display: block;
 }
 .book-card h3 { font-size: 1.05rem; margin-bottom: 0.2rem; }
 .book-author { font-size: 0.85rem; color: #6b5c4a; margin-bottom: 0.5rem; }
@@ -371,11 +369,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   height: 60px;
   border-radius: 4px;
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.4rem;
-  color: var(--paper);
+  object-fit: cover;
+  display: block;
 }
 .cart-item-name {
   font-family: var(--font-head);
@@ -561,20 +556,25 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .carousel-slide {
   min-width: 100%;
   height: 320px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 5rem;
-  color: var(--paper);
-  flex-direction: column;
-  text-align: center;
-  padding: 1rem;
+  position: relative; /* lets the caption sit on top of the image */
+}
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* fills the slide without stretching the photo */
 }
 .carousel-slide p {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 0.9rem 1.2rem;
   font-family: var(--font-head);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   color: var(--paper);
-  margin-top: 0.5rem;
+  /* gradient behind the caption text so it stays readable over any photo */
+  background: linear-gradient(to top, rgba(43,33,24,0.85), rgba(43,33,24,0));
 }
 .carousel-btn {
   position: absolute;
@@ -600,12 +600,17 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .gallery-item {
   height: 140px;
   border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.2rem;
-  color: var(--paper);
+  overflow: hidden;
   cursor: pointer;
+}
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* fills the thumbnail without distorting the photo */
+  transition: transform 0.3s ease;
+}
+.gallery-item:hover img {
+  transform: scale(1.06); /* small zoom on hover as a hint that it's clickable */
 }
 
 /* Simple modal / lightbox, hidden by default */
@@ -770,5 +775,5 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .highlights { grid-template-columns: 1fr; }
   .book-grid { grid-template-columns: 1fr; }
   .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-  .carousel-slide { height: 220px; font-size: 3rem; }
+  .carousel-slide { height: 220px; }
 }

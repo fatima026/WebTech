@@ -100,14 +100,14 @@ function updateCartBadge() {
   badge.textContent = totalItems > 0 ? totalItems : '';
 }
 
-function addToCart(title, author, price) {
+function addToCart(title, author, price, image) {
   const cart = getCart();
   const existing = cart.find(item => item.title === title);
 
   if (existing) {
     existing.qty += 1; // already in cart, just bump the quantity
   } else {
-    cart.push({ title, author, price, qty: 1 });
+    cart.push({ title, author, price, image, qty: 1 });
   }
 
   saveCart(cart);
@@ -122,8 +122,9 @@ function setupAddToCart() {
       const title = card.querySelector('h3').textContent;
       const author = card.querySelector('.book-author').textContent;
       const price = parseFloat(card.querySelector('.book-price').textContent.replace('$', ''));
+      const image = card.querySelector('.book-cover').getAttribute('src');
 
-      addToCart(title, author, price);
+      addToCart(title, author, price, image);
 
       // Simple visual feedback: swap the label and lock the button briefly
       button.textContent = 'Added ✓';
@@ -170,7 +171,7 @@ function setupCartPage() {
     let subtotal = 0;
     let totalItems = 0;
 
-    // Cycle through the same warm cover-tone classes used on the Books page
+    // Cycle through warm tone classes as a fallback background while the image loads
     const coverTones = ['tone-1', 'tone-2', 'tone-3', 'tone-4'];
 
     cart.forEach((item, index) => {
@@ -182,7 +183,7 @@ function setupCartPage() {
       row.innerHTML = `
         <td>
           <div class="cart-item-row">
-            <div class="cart-item-cover ${coverTones[index % coverTones.length]}">📖</div>
+            <img src="${item.image}" alt="${item.title} cover" class="cart-item-cover ${coverTones[index % coverTones.length]}">
             <div>
               <div class="cart-item-name">${item.title}</div>
               <div class="cart-item-author">${item.author}</div>
@@ -370,7 +371,7 @@ function setupContactForm() {
   if (!form) return;
 
   form.addEventListener('submit', (event) => {
-    event.preventDefault(); // stop the page from reloading (no backend to send to)
+    event.preventDefault(); // validate first, only send once everything checks out
 
     let formIsValid = true;
 
@@ -390,14 +391,22 @@ function setupContactForm() {
 
     const successBanner = document.getElementById('formSuccess');
 
-    if (formIsValid) {
+    if (!formIsValid) {
+      successBanner.classList.remove('visible');
+      return;
+    }
+
+    // Send the message to FormSubmit in the background, so we can show our
+    // own success message instead of redirecting away to FormSubmit's page
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).finally(() => {
       successBanner.classList.add('visible');
       form.reset();
-      // Hide the success message again after a few seconds
-      setTimeout(() => successBanner.classList.remove('visible'), 4000);
-    } else {
-      successBanner.classList.remove('visible');
-    }
+      setTimeout(() => successBanner.classList.remove('visible'), 6000);
+    });
   });
 }
 
