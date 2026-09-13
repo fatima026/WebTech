@@ -17,34 +17,42 @@
 
         <!-- Left: cart items table -->
         <div>
-          <h1 class="section-title">Your cart</h1>
-          <p class="section-lead">Items you've added from the Books page.</p>
+          <div class="cart-heading-row">
+            <div>
+              <h1 class="section-title">Your cart</h1>
+              <p class="section-lead" style="margin-bottom:0;">Items you've added from the Books page.</p>
+            </div>
+            <span class="item-count" id="cartItemCount"></span>
+          </div>
 
           <!-- Shown only when the cart has no items -->
           <div class="empty-cart" id="emptyCartMessage">
+            <span class="empty-icon" aria-hidden="true">🛒</span>
             <p>Your cart is empty.</p>
             <a href="books.html">Browse the collection →</a>
           </div>
 
-          <table class="cart-table" id="cartTable">
-            <thead>
-              <tr>
-                <th>Book</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Subtotal</th>
-                <th></th>
-              </tr>
-            </thead>
-            <!-- Rows are built by JS from whatever is saved in the cart -->
-            <tbody id="cartBody"></tbody>
-          </table>
+          <div class="cart-card">
+            <table class="cart-table" id="cartTable">
+              <thead>
+                <tr>
+                  <th>Book</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Subtotal</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <!-- Rows are built by JS from whatever is saved in the cart -->
+              <tbody id="cartBody"></tbody>
+            </table>
+          </div>
         </div>
 
         <!-- Right: order summary + checkout form -->
         <div id="checkoutSection">
           <div class="summary-box">
-            <h2 class="section-title" style="font-size:1.4rem;">Order summary</h2>
+            <h2>Order summary</h2>
 
             <div class="summary-row">
               <span>Subtotal</span>
@@ -59,7 +67,7 @@
               <span id="summaryTotal">$0.00</span>
             </div>
 
-            <p class="cod-note">Payment method: Cash on delivery. You'll pay when your order arrives.</p>
+            <p class="cod-note"><span aria-hidden="true">💵</span> Payment method: Cash on delivery. You'll pay when your order arrives.</p>
 
             <!-- Success message shown after a valid checkout submission -->
             <div class="form-success" id="checkoutSuccess">

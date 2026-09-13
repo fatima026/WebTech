@@ -155,42 +155,56 @@ function setupCartPage() {
     if (cart.length === 0) {
       // Nothing in the cart: hide the table/checkout, show a friendly message
       emptyMessage.style.display = 'block';
-      cartTable.style.display = 'none';
+      document.querySelector('.cart-card').style.display = 'none';
       checkoutSection.style.display = 'none';
+      document.getElementById('cartItemCount').textContent = '';
       return;
     }
 
     emptyMessage.style.display = 'none';
-    cartTable.style.display = 'table';
+    document.querySelector('.cart-card').style.display = 'block';
     checkoutSection.style.display = 'block';
 
     // Rebuild the table rows from scratch each time the cart changes
     cartBody.innerHTML = '';
     let subtotal = 0;
+    let totalItems = 0;
+
+    // Cycle through the same warm cover-tone classes used on the Books page
+    const coverTones = ['tone-1', 'tone-2', 'tone-3', 'tone-4'];
 
     cart.forEach((item, index) => {
       const lineTotal = item.price * item.qty;
       subtotal += lineTotal;
+      totalItems += item.qty;
 
       const row = document.createElement('tr');
       row.innerHTML = `
         <td>
-          <div class="cart-item-name">${item.title}</div>
-          <div class="cart-item-author">${item.author}</div>
-        </td>
-        <td>$${item.price.toFixed(2)}</td>
-        <td>
-          <div class="qty-controls">
-            <button class="qty-btn" data-action="decrease" data-index="${index}">−</button>
-            <span>${item.qty}</span>
-            <button class="qty-btn" data-action="increase" data-index="${index}">+</button>
+          <div class="cart-item-row">
+            <div class="cart-item-cover ${coverTones[index % coverTones.length]}">📖</div>
+            <div>
+              <div class="cart-item-name">${item.title}</div>
+              <div class="cart-item-author">${item.author}</div>
+            </div>
           </div>
         </td>
-        <td>$${lineTotal.toFixed(2)}</td>
+        <td class="cart-item-price">$${item.price.toFixed(2)}</td>
+        <td>
+          <div class="qty-controls">
+            <button class="qty-btn" data-action="decrease" data-index="${index}" aria-label="Decrease quantity">−</button>
+            <span class="qty-value">${item.qty}</span>
+            <button class="qty-btn" data-action="increase" data-index="${index}" aria-label="Increase quantity">+</button>
+          </div>
+        </td>
+        <td class="cart-item-subtotal">$${lineTotal.toFixed(2)}</td>
         <td><button class="remove-link" data-index="${index}">Remove</button></td>
       `;
       cartBody.appendChild(row);
     });
+
+    document.getElementById('cartItemCount').textContent =
+      `${totalItems} item${totalItems === 1 ? '' : 's'}`;
 
     // Update the summary numbers (flat delivery fee kept simple)
     const deliveryFee = 3.00;

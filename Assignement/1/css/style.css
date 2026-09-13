@@ -336,6 +336,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   align-items: start;
 }
 
+/* Wrap the table in a card so it matches the book/about page framing
+   instead of floating bare on the page background */
+.cart-card {
+  background-color: #fff;
+  border: 1px solid var(--tan);
+  border-radius: 6px;
+  padding: 1.75rem;
+}
+
 .cart-table {
   width: 100%;
   border-collapse: collapse;
@@ -343,83 +352,139 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .cart-table th {
   text-align: left;
   font-family: var(--font-head);
-  font-size: 0.9rem;
-  padding-bottom: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #6b5c4a;
+  padding-bottom: 0.85rem;
   border-bottom: 2px solid var(--ink);
 }
 .cart-table td {
-  padding: 1rem 0;
+  padding: 1.1rem 0.5rem 1.1rem 0;
   border-bottom: 1px solid var(--tan);
   vertical-align: middle;
 }
-.cart-item-name { font-weight: 600; }
-.cart-item-author { font-size: 0.85rem; color: #6b5c4a; }
+.cart-table tr:last-child td { border-bottom: none; }
+
+.cart-item-row { display: flex; align-items: center; gap: 1rem; }
+.cart-item-cover {
+  width: 48px;
+  height: 60px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: var(--paper);
+}
+.cart-item-name {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 1.02rem;
+}
+.cart-item-author { font-size: 0.85rem; color: #6b5c4a; margin-top: 0.15rem; }
+.cart-item-price { color: #6b5c4a; }
+.cart-item-subtotal { font-weight: 700; color: var(--brick); }
 
 .qty-controls {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.75rem;
+  border: 1px solid var(--tan);
+  border-radius: 999px;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--tan-light);
 }
 .qty-btn {
-  width: 26px;
-  height: 26px;
-  border: 1px solid var(--tan);
-  background-color: var(--tan-light);
-  border-radius: 4px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background-color: #fff;
+  border-radius: 50%;
   cursor: pointer;
   font-size: 1rem;
   line-height: 1;
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgba(43,33,24,0.15);
 }
-.qty-btn:hover { background-color: var(--tan); }
+.qty-btn:hover { background-color: var(--forest); color: var(--paper); }
+.qty-value { min-width: 1.2rem; text-align: center; font-weight: 600; }
 
 .remove-link {
   background: none;
   border: none;
   color: var(--brick);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
   cursor: pointer;
-  padding: 0;
+  padding: 0.3rem 0;
 }
 .remove-link:hover { text-decoration: underline; }
 
 .empty-cart {
   text-align: center;
-  padding: 3rem 1rem;
+  padding: 4rem 1.5rem;
   color: #6b5c4a;
+  background-color: #fff;
+  border: 1px dashed var(--tan);
+  border-radius: 6px;
 }
+.empty-cart .empty-icon { font-size: 3rem; display: block; margin-bottom: 1rem; }
 .empty-cart a { font-weight: 600; }
 
-/* Order summary box on the right */
+.cart-heading-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.5rem;
+}
+.cart-heading-row .item-count { font-size: 0.9rem; color: #6b5c4a; }
+
+/* Order summary box on the right, styled as a matching card */
 .summary-box {
   border: 1px solid var(--tan);
   border-radius: 6px;
-  padding: 1.5rem;
-  background-color: var(--tan-light);
+  padding: 1.75rem;
+  background-color: #fff;
+  position: sticky;
+  top: 5.5rem;
+}
+.summary-box h2 {
+  border-bottom: 1px solid var(--tan);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 .summary-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.7rem;
   font-size: 0.95rem;
+  color: #5a4d3f;
 }
 .summary-row.total {
+  font-family: var(--font-head);
   font-weight: 700;
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   border-top: 1px solid var(--tan);
-  padding-top: 0.75rem;
-  margin-top: 0.5rem;
+  padding-top: 0.9rem;
+  margin-top: 0.6rem;
   color: var(--brick);
 }
 .cod-note {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   font-size: 0.85rem;
   color: var(--forest);
   font-weight: 600;
-  margin: 1rem 0;
-  padding: 0.6rem 0.8rem;
-  background-color: #fff;
+  margin: 1.25rem 0;
+  padding: 0.7rem 0.9rem;
+  background-color: var(--tan-light);
   border: 1px dashed var(--forest);
   border-radius: 4px;
 }
+.summary-box .form-group { margin-bottom: 1rem; }
+.summary-box .btn { width: 100%; text-align: center; margin-top: 0.5rem; }
 
 /* ==========================================================================
    ABOUT PAGE
