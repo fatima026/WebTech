@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BookHaven — Books</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="books">
+
+  <div id="header-placeholder"></div>
+  <div id="nav-placeholder"></div>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <h1 class="section-title">Our collection</h1>
+        <p class="section-lead">A small, rotating selection of what's currently on our shelves.</p>
+
+        <!-- Filter buttons: JS shows/hides book cards by data-category -->
+        <div class="filter-bar">
+          <button class="filter-btn active" data-category="all">All</button>
+          <button class="filter-btn" data-category="fiction">Fiction</button>
+          <button class="filter-btn" data-category="nonfiction">Non-fiction</button>
+          <button class="filter-btn" data-category="poetry">Poetry</button>
+        </div>
+
+        <div class="book-grid">
+
+          <article class="book-card" data-category="fiction">
+            <div class="book-cover tone-1">📖</div>
+            <h3>The Quiet Coastline</h3>
+            <p class="book-author">by Maren Osei</p>
+            <p class="book-price">$14.00</p>
+            <button class="add-btn">Add to cart</button>
+          </article>
+
+          <article class="book-card" data-category="nonfiction">
+            <div class="book-cover tone-2">📗</div>
+            <h3>A Short History of Ink</h3>
+            <p class="book-author">by David Corry</p>
+            <p class="book-price">$18.50</p>
+            <button class="add-btn">Add to cart</button>
+          </article>
+
+          <article class="book-card" data-category="poetry">
+            <div class="book-cover tone-3">📕</div>
+            <h3>Small Weather</h3>
+            <p class="book-author">by Priya Nandan</p>
+            <p class="book-price">$11.00</p>
+            <button class="add-btn">Add to cart</button>
+          </article>
+
+          <article class="book-card" data-category="fiction">
+            <div class="book-cover tone-4">📘</div>
+            <h3>The Cartographer's Daughter</h3>
+            <p class="book-author">by Elias Munro</p>
+            <p class="book-price">$16.00</p>
+            <button class="add-btn">Add to cart</button>
+          </article>
+
+          <article class="book-card" data-category="nonfiction">
+            <div class="book-cover tone-1">📙</div>
+            <h3>Notes from a Small Kitchen</h3>
+            <p class="book-author">by Hana Ito</p>
+            <p class="book-price">$21.00</p>
+            <button class="add-btn">Add to cart</button>
+          </article>
+
+          <article class="book-card" data-category="poetry">
+            <div class="book-cover tone-2">📓</div>
+            <h3>Fieldwork</h3>
+            <p class="book-author">by Tomas Ridge</p>
+            <p class="book-price">$9.50</p>
+            <button class="add-btn">Add to cart</button>
+          </article>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

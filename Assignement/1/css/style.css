@@ -1,0 +1,579 @@
+/* ==========================================================================
+   BookHaven — main stylesheet
+   Organized as: fonts/reset -> color & spacing tokens -> layout helpers ->
+   header/nav/footer -> page sections -> components (cards, forms, etc) ->
+   responsive rules at the bottom.
+   ========================================================================== */
+
+/* Import two web fonts: Lora for headings (warm, literary serif)
+   and Inter for body text and UI (clean, easy to read) */
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+/* Basic reset so every browser starts from the same baseline */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ---------- Design tokens: colors, fonts, spacing kept as variables ---------- */
+:root {
+  --paper: #FAF6EF;       /* warm cream page background */
+  --ink: #2B2118;         /* espresso brown, main text color */
+  --brick: #8C3B2E;       /* brick red, primary accent / links / buttons */
+  --forest: #3E5C4A;      /* forest green, secondary accent */
+  --tan: #D8CBB4;         /* soft tan, borders and card backgrounds */
+  --tan-light: #F0E9DC;   /* lighter tan, subtle section backgrounds */
+
+  --font-head: 'Lora', serif;
+  --font-body: 'Inter', sans-serif;
+
+  --gap: 1.5rem;          /* standard spacing unit used across the site */
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background-color: var(--paper);
+  line-height: 1.6;
+}
+
+/* Reusable centered container with side padding, used inside every section */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+a {
+  color: var(--brick);
+  text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+img { max-width: 100%; display: block; }
+
+h1, h2, h3 {
+  font-family: var(--font-head);
+  line-height: 1.25;
+}
+
+/* Visible focus outline everywhere, for keyboard accessibility */
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--forest);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+.site-header {
+  background-color: var(--ink);
+  color: var(--paper);
+  padding: 1.75rem 0 1.25rem;
+}
+.header-inner { text-align: center; }
+.logo {
+  font-family: var(--font-head);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--paper);
+}
+.logo:hover { text-decoration: none; color: var(--tan); }
+.tagline {
+  font-size: 0.95rem;
+  color: var(--tan);
+  margin-top: 0.25rem;
+}
+
+/* ==========================================================================
+   NAVIGATION
+   ========================================================================== */
+.site-nav {
+  background-color: var(--brick);
+  position: sticky;   /* stays visible while scrolling */
+  top: 0;
+  z-index: 10;
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+}
+.nav-links a {
+  display: block;
+  padding: 0.9rem 0.25rem;
+  color: var(--paper);
+  font-weight: 500;
+  font-size: 0.95rem;
+  border-bottom: 3px solid transparent; /* reserved space for active/hover line */
+}
+.nav-links a:hover,
+.nav-links a.active {
+  text-decoration: none;
+  border-bottom-color: var(--tan);
+}
+
+/* Hamburger button: hidden on desktop, shown only on small screens */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.9rem 0;
+}
+.nav-toggle span {
+  width: 26px;
+  height: 3px;
+  background-color: var(--paper);
+  border-radius: 2px;
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.site-footer {
+  background-color: var(--ink);
+  color: var(--tan);
+  margin-top: 4rem;
+  padding: 3rem 0 1.5rem;
+}
+.footer-inner {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap);
+}
+.footer-block h3 {
+  color: var(--paper);
+  font-size: 1.1rem;
+  margin-bottom: 0.6rem;
+}
+.footer-block p { font-size: 0.9rem; margin-bottom: 0.3rem; }
+.social-links { list-style: none; }
+.social-links a { color: var(--tan); font-size: 0.9rem; }
+.footer-copy {
+  text-align: center;
+  font-size: 0.8rem;
+  margin-top: 2.5rem;
+  color: var(--tan);
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   HERO (used on the home page)
+   ========================================================================== */
+.hero {
+  background-color: var(--tan-light);
+  padding: 4.5rem 0;
+  border-bottom: 1px solid var(--tan);
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 3rem;
+}
+.hero h1 {
+  font-size: 2.75rem;
+  margin-bottom: 1rem;
+}
+.hero p {
+  font-size: 1.1rem;
+  max-width: 42ch;
+  margin-bottom: 1.75rem;
+}
+.hero-art {
+  font-size: 8rem;
+  text-align: center;
+  line-height: 1;
+}
+
+/* Generic call-to-action button style, reused across pages */
+.btn {
+  display: inline-block;
+  background-color: var(--brick);
+  color: var(--paper);
+  padding: 0.75rem 1.6rem;
+  border-radius: 4px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: var(--font-body);
+}
+.btn:hover { background-color: var(--forest); text-decoration: none; }
+
+/* ==========================================================================
+   GENERIC SECTION SPACING
+   ========================================================================== */
+.section {
+  padding: 3.5rem 0;
+}
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+.section-lead {
+  max-width: 60ch;
+  margin-bottom: 2.25rem;
+  color: #5a4d3f;
+}
+.section-alt {
+  background-color: var(--tan-light);
+}
+
+/* ==========================================================================
+   HIGHLIGHT / FEATURE STRIP (home page)
+   ========================================================================== */
+.highlights {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap);
+}
+.highlight {
+  border-top: 3px solid var(--forest);
+  padding-top: 1rem;
+}
+.highlight h3 { margin-bottom: 0.4rem; font-size: 1.2rem; }
+
+/* ==========================================================================
+   BOOK GRID (books page)
+   ========================================================================== */
+.filter-bar {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.filter-btn {
+  background-color: var(--tan-light);
+  border: 1px solid var(--tan);
+  color: var(--ink);
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+}
+.filter-btn:hover { background-color: var(--tan); }
+.filter-btn.active {
+  background-color: var(--brick);
+  border-color: var(--brick);
+  color: var(--paper);
+}
+
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+.book-card {
+  border-bottom: 1px solid var(--tan);
+  padding-bottom: 1rem;
+}
+.book-cover {
+  height: 220px;
+  border-radius: 4px;
+  margin-bottom: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: var(--paper);
+}
+.book-card h3 { font-size: 1.05rem; margin-bottom: 0.2rem; }
+.book-author { font-size: 0.85rem; color: #6b5c4a; margin-bottom: 0.5rem; }
+.book-price { font-weight: 600; color: var(--brick); }
+
+/* Simple "added to cart" style feedback badge */
+.book-card button.add-btn {
+  margin-top: 0.75rem;
+  background: none;
+  border: 1px solid var(--forest);
+  color: var(--forest);
+  padding: 0.4rem 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+}
+.book-card button.add-btn:hover { background-color: var(--forest); color: var(--paper); }
+.book-card button.add-btn.added {
+  background-color: var(--forest);
+  color: var(--paper);
+  border-color: var(--forest);
+}
+
+/* ==========================================================================
+   ABOUT PAGE
+   ========================================================================== */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+.timeline { list-style: none; }
+.timeline li {
+  border-left: 2px solid var(--tan);
+  padding: 0 0 1.5rem 1.25rem;
+  position: relative;
+}
+.timeline li::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--brick);
+}
+.timeline .year { font-weight: 600; color: var(--brick); display: block; }
+
+/* Accordion used for FAQs on the About page */
+.accordion-item {
+  border-bottom: 1px solid var(--tan);
+}
+.accordion-header {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 1rem 0;
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease;
+  color: #5a4d3f;
+}
+.accordion-body p { padding-bottom: 1rem; }
+.accordion-item.open .accordion-body { max-height: 200px; }
+.accordion-icon { transition: transform 0.25s ease; }
+.accordion-item.open .accordion-icon { transform: rotate(45deg); }
+
+/* ==========================================================================
+   GALLERY PAGE — image slider / carousel
+   ========================================================================== */
+.carousel {
+  position: relative;
+  max-width: 700px;
+  margin: 0 auto 3rem;
+  overflow: hidden;
+  border-radius: 6px;
+  border: 1px solid var(--tan);
+}
+.carousel-track {
+  display: flex;
+  transition: transform 0.4s ease;
+}
+.carousel-slide {
+  min-width: 100%;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
+  color: var(--paper);
+  flex-direction: column;
+  text-align: center;
+  padding: 1rem;
+}
+.carousel-slide p {
+  font-family: var(--font-head);
+  font-size: 1.1rem;
+  color: var(--paper);
+  margin-top: 0.5rem;
+}
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(43, 33, 24, 0.6);
+  color: var(--paper);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+.carousel-btn.prev { left: 12px; }
+.carousel-btn.next { right: 12px; }
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+.gallery-item {
+  height: 140px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  color: var(--paper);
+  cursor: pointer;
+}
+
+/* Simple modal / lightbox, hidden by default */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(43, 33, 24, 0.75);
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+.modal-overlay.visible { display: flex; }
+.modal-box {
+  background-color: var(--paper);
+  border-radius: 6px;
+  padding: 2rem;
+  max-width: 500px;
+  text-align: center;
+  position: relative;
+}
+.modal-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.9rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+/* ==========================================================================
+   CONTACT PAGE — form + info
+   ========================================================================== */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+.form-group { margin-bottom: 1.25rem; }
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+}
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--tan);
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  background-color: #fff;
+}
+.form-group textarea { resize: vertical; min-height: 110px; }
+
+/* Error message shown under a field when validation fails */
+.error-msg {
+  color: var(--brick);
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+  display: none;
+}
+.form-group.invalid input,
+.form-group.invalid textarea {
+  border-color: var(--brick);
+}
+.form-group.invalid .error-msg { display: block; }
+
+/* Success banner shown after the form is submitted successfully */
+.form-success {
+  display: none;
+  background-color: var(--forest);
+  color: var(--paper);
+  padding: 0.9rem 1.1rem;
+  border-radius: 4px;
+  margin-bottom: 1.25rem;
+  font-size: 0.9rem;
+}
+.form-success.visible { display: block; }
+
+.map-placeholder {
+  height: 260px;
+  border-radius: 6px;
+  background-color: var(--tan-light);
+  border: 1px dashed var(--tan);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b5c4a;
+  margin-top: 1.5rem;
+  text-align: center;
+  padding: 1rem;
+}
+
+/* Neutral warm-toned "cover" backgrounds used in place of real photos,
+   cycled across cards/slides so the page doesn't look monotone */
+.tone-1 { background-color: #8C3B2E; }
+.tone-2 { background-color: #3E5C4A; }
+.tone-3 { background-color: #B98B4E; }
+.tone-4 { background-color: #5C4A72; }
+
+/* ==========================================================================
+   RESPONSIVE RULES
+   ========================================================================== */
+
+/* Tablet */
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; text-align: center; }
+  .hero p { margin-left: auto; margin-right: auto; }
+  .highlights { grid-template-columns: 1fr 1fr; }
+  .book-grid { grid-template-columns: 1fr 1fr; }
+  .about-grid, .contact-grid { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+  .footer-inner { grid-template-columns: 1fr; text-align: center; }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .nav-toggle { display: flex; }
+  .nav-inner { justify-content: space-between; }
+
+  /* Collapse nav links into a dropdown under the toggle button */
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background-color: var(--brick);
+    gap: 0;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { padding: 0.9rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.15); }
+
+  .hero h1 { font-size: 2.1rem; }
+  .hero-art { font-size: 5rem; }
+  .highlights { grid-template-columns: 1fr; }
+  .book-grid { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  .carousel-slide { height: 220px; font-size: 3rem; }
+}

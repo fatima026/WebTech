@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BookHaven — Gallery</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="gallery">
+
+  <div id="header-placeholder"></div>
+  <div id="nav-placeholder"></div>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <h1 class="section-title">Gallery</h1>
+        <p class="section-lead">A look inside the store and a few moments from past events.</p>
+
+        <!-- Image carousel / slider -->
+        <div class="carousel">
+          <div class="carousel-track" id="carouselTrack">
+            <div class="carousel-slide tone-1">
+              🏬
+              <p>Our storefront on Willow Street</p>
+            </div>
+            <div class="carousel-slide tone-2">
+              ☕
+              <p>The reading corner, open to everyone</p>
+            </div>
+            <div class="carousel-slide tone-3">
+              🎤
+              <p>Author reading night, Spring 2026</p>
+            </div>
+            <div class="carousel-slide tone-4">
+              📚
+              <p>New arrivals table, restocked weekly</p>
+            </div>
+          </div>
+          <button class="carousel-btn prev" id="prevSlide" aria-label="Previous slide">‹</button>
+          <button class="carousel-btn next" id="nextSlide" aria-label="Next slide">›</button>
+        </div>
+
+        <!-- Thumbnail grid: clicking any tile opens the modal with details -->
+        <div class="gallery-grid">
+          <div class="gallery-item tone-1" data-title="Storefront" data-desc="Our little shop on Willow Street, open since 2018.">🏬</div>
+          <div class="gallery-item tone-2" data-title="Reading Corner" data-desc="Free coffee and a quiet spot by the window.">☕</div>
+          <div class="gallery-item tone-3" data-title="Author Night" data-desc="One of our monthly evenings with local writers.">🎤</div>
+          <div class="gallery-item tone-4" data-title="New Arrivals" data-desc="Freshly unboxed titles, restocked every Friday.">📚</div>
+          <div class="gallery-item tone-2" data-title="Book Club" data-desc="Our reading group meets on the first Sunday of the month.">📖</div>
+          <div class="gallery-item tone-1" data-title="Staff Picks" data-desc="A shelf of whatever our team is currently obsessed with.">⭐</div>
+          <div class="gallery-item tone-3" data-title="Poetry Corner" data-desc="A small dedicated shelf for local poets.">📝</div>
+          <div class="gallery-item tone-4" data-title="Window Display" data-desc="Changes with the season — currently: autumn reads.">🍂</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal / lightbox for gallery items, hidden until a tile is clicked -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+      <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+      <h3 id="modalTitle"></h3>
+      <p id="modalText"></p>
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
