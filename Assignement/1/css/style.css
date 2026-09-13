@@ -704,6 +704,26 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   padding: 1rem;
 }
 
+/* Responsive map wrapper: keeps the embedded iframe inside a fixed,
+   rounded box that scales with the page instead of overflowing it */
+.map-frame {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  margin-top: 1.5rem;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--tan);
+}
+.map-frame iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 /* Neutral warm-toned "cover" backgrounds used in place of real photos,
    cycled across cards/slides so the page doesn't look monotone */
 .tone-1 { background-color: #8C3B2E; }
