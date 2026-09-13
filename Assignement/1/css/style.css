@@ -329,7 +329,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
    ========================================================================== */
 .cart-layout {
   display: grid;
-  grid-template-columns: 1.4fr 1fr;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); /* minmax(0, ...) stops columns from stretching past the container to fit their content */
   gap: 3rem;
   align-items: start;
 }
@@ -341,6 +341,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   border: 1px solid var(--tan);
   border-radius: 6px;
   padding: 1.75rem;
+  max-width: 100%; /* never grow past its grid column, even if content is wider */
   overflow-x: auto; /* lets the table scroll sideways on narrow screens instead of breaking layout */
   -webkit-overflow-scrolling: touch;
 }
