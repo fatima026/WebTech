@@ -28,8 +28,74 @@ function loadIncludes() {
         if (item.id === 'nav-placeholder') {
           setupNav();
         }
+        // Once the header is in the page, start the tagline typewriter
+        if (item.id === 'header-placeholder') {
+          setupTaglineTypewriter();
+        }
       });
   });
+}
+
+/* ---------- 1b. Header: cycle through taglines with a typewriter effect ----------
+   Up to 4 taglines. Each one is typed out, held for a beat, then erased and
+   replaced with the next. The blinking cursor next to the text never stops,
+   it just keeps blinking via CSS regardless of what the typewriter is doing. */
+function setupTaglineTypewriter() {
+  const taglines = [
+    'A Small Shop for Well-Loved Books',
+    'Secondhand Stories, First-Class Finds',
+    'Every Page Has Been Somewhere Before',
+    'Where Old Books Find New Readers'
+  ];
+
+  const textEl = document.getElementById('taglineText');
+  if (!textEl) return;
+
+  const TYPE_SPEED = 45;     // ms per character while typing
+  const ERASE_SPEED = 25;    // ms per character while erasing
+  const HOLD_TIME = 4000;    // ms to hold each fully-typed tagline before switching
+
+  let taglineIndex = 0;
+
+  function typeTagline(text, onDone) {
+    let i = 0;
+    (function typeChar() {
+      textEl.textContent = text.slice(0, i);
+      i++;
+      if (i <= text.length) {
+        setTimeout(typeChar, TYPE_SPEED);
+      } else {
+        onDone();
+      }
+    })();
+  }
+
+  function eraseTagline(text, onDone) {
+    let i = text.length;
+    (function eraseChar() {
+      textEl.textContent = text.slice(0, i);
+      i--;
+      if (i >= 0) {
+        setTimeout(eraseChar, ERASE_SPEED);
+      } else {
+        onDone();
+      }
+    })();
+  }
+
+  function cycle() {
+    const current = taglines[taglineIndex % taglines.length];
+    typeTagline(current, () => {
+      setTimeout(() => {
+        eraseTagline(current, () => {
+          taglineIndex++;
+          cycle();
+        });
+      }, HOLD_TIME);
+    });
+  }
+
+  cycle();
 }
 
 /* ---------- 2. Mobile hamburger menu + highlight the current page link ---------- */

@@ -6,15 +6,13 @@
   <title>BookHaven — Home</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
-<!-- data-page tells main.js which nav link to highlight as active -->
 <body data-page="home">
 
-  <!-- Header and nav are injected here by main.js from components/ -->
   <div id="header-placeholder"></div>
   <div id="nav-placeholder"></div>
 
   <main>
-    <!-- HERO: first thing a visitor sees -->
+    <!-- HERO -->
     <section class="hero">
       <div class="container hero-inner">
         <div>
@@ -22,13 +20,28 @@
           <p>BookHaven is a small independent bookstore stocking new
              releases, forgotten classics, and everything in between.
              Come in, sit down, and lose track of time.</p>
-          <a href="books.html" class="btn">Browse the shelves</a>
+          <a href="books.html" class="btn"><span>Browse the shelves</span></a>
+
+          <div class="hero-stats">
+            <div>
+              <span class="hero-stat-num">2,400+</span>
+              <span class="hero-stat-label">Titles in stock</span>
+            </div>
+            <div>
+              <span class="hero-stat-num">10yr</span>
+              <span class="hero-stat-label">Est. 2015</span>
+            </div>
+            <div>
+              <span class="hero-stat-num">100%</span>
+              <span class="hero-stat-label">Hand-curated</span>
+            </div>
+          </div>
         </div>
         <div class="hero-art" aria-hidden="true">📚</div>
       </div>
     </section>
 
-    <!-- HIGHLIGHTS: three short reasons to visit -->
+    <!-- HIGHLIGHTS -->
     <section class="section">
       <div class="container">
         <h2 class="section-title">Why people keep coming back</h2>
@@ -36,14 +49,17 @@
 
         <div class="highlights">
           <article class="highlight">
+            <span class="highlight-icon">🗂</span>
             <h3>Hand-picked shelves</h3>
             <p>Every title is chosen by our staff, not an algorithm. If it's here, someone loved it first.</p>
           </article>
           <article class="highlight">
+            <span class="highlight-icon">☕</span>
             <h3>Reading corner</h3>
             <p>Free coffee, comfy chairs, and no pressure to buy anything before you decide.</p>
           </article>
           <article class="highlight">
+            <span class="highlight-icon">🌍</span>
             <h3>Local & global voices</h3>
             <p>From debut local authors to translated fiction from across the world.</p>
           </article>
@@ -51,18 +67,17 @@
       </div>
     </section>
 
-    <!-- Quick nudge toward the Services/Books page -->
+    <!-- CTA -->
     <section class="section section-alt">
       <div class="container">
         <h2 class="section-title">Looking for something specific?</h2>
         <p class="section-lead">Fiction, non-fiction, poetry, or a gift for someone who "already has too many books" — we probably have it.</p>
-        <a href="books.html" class="btn">See our collection</a>
+        <a href="books.html" class="btn"><span>See our collection</span></a>
       </div>
     </section>
   </main>
 
   <div id="footer-placeholder"></div>
-
   <script src="js/main.js"></script>
 </body>
 </html>
