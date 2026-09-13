@@ -326,6 +326,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 
 /* ==========================================================================
    CART PAGE
+   Built with flexbox cards instead of a <table> — a table forces a
+   minimum content width that fights responsive layouts, so each cart
+   item is its own flexible row that wraps naturally on any screen.
    ========================================================================== */
 .cart-layout {
   display: grid;
@@ -333,48 +336,57 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   gap: 3rem;
   align-items: start;
 }
+/* Grid items get an automatic min-width equal to their content's size
+   unless told otherwise — this keeps both columns bound to their track
+   no matter what's inside them */
+.cart-layout > div {
+  min-width: 0;
+}
 
-/* Wrap the table in a card so it matches the book/about page framing
-   instead of floating bare on the page background */
-.cart-card {
+.cart-heading-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.cart-heading-row .item-count { font-size: 0.9rem; color: #6b5c4a; }
+
+/* The list that holds every cart item card */
+.cart-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* One cart item: an image plus details, laid out with flex-wrap so the
+   quantity/price/remove group drops to its own line on narrow screens
+   instead of squeezing or overflowing */
+.cart-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
   background-color: #fff;
   border: 1px solid var(--tan);
   border-radius: 6px;
-  padding: 1.75rem;
-  max-width: 100%; /* never grow past its grid column, even if content is wider */
-  overflow-x: auto; /* lets the table scroll sideways on narrow screens instead of breaking layout */
-  -webkit-overflow-scrolling: touch;
+  padding: 1rem;
 }
 
-.cart-table {
-  width: 100%;
-  min-width: 480px; /* keeps columns usable; overflow-x on the wrapper handles small screens */
-  border-collapse: collapse;
-}
-.cart-table th {
-  text-align: left;
-  font-family: var(--font-head);
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #6b5c4a;
-  padding-bottom: 0.85rem;
-  border-bottom: 2px solid var(--ink);
-}
-.cart-table td {
-  padding: 1.1rem 0.5rem 1.1rem 0;
-  border-bottom: 1px solid var(--tan);
-  vertical-align: middle;
-}
-.cart-table tr:last-child td { border-bottom: none; }
-
-.cart-item-row { display: flex; align-items: center; gap: 1rem; }
 .cart-item-cover {
-  width: 48px;
+  width: 60px;
   aspect-ratio: 3 / 4; /* matches the real image dimensions: 896x1200 */
   border-radius: 4px;
   flex-shrink: 0;
   object-fit: cover;
   display: block;
+}
+
+/* Title + author + (on mobile) price, grows to fill available space */
+.cart-item-info {
+  flex: 1 1 160px; /* can shrink, but won't go below 160px before wrapping */
+  min-width: 0; /* allows long titles to wrap instead of forcing the row wider */
 }
 .cart-item-name {
   font-family: var(--font-head);
@@ -382,8 +394,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   font-size: 1.02rem;
 }
 .cart-item-author { font-size: 0.85rem; color: #6b5c4a; margin-top: 0.15rem; }
-.cart-item-price { color: #6b5c4a; }
-.cart-item-subtotal { font-weight: 700; color: var(--brick); }
+.cart-item-price { font-size: 0.85rem; color: #6b5c4a; margin-top: 0.3rem; }
+
+/* Quantity stepper, subtotal and remove button, grouped so they wrap
+   together onto their own line as a unit on narrow screens */
+.cart-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto; /* pushes this group to the right when there's room */
+}
 
 .qty-controls {
   display: inline-flex;
@@ -393,6 +413,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   border-radius: 999px;
   padding: 0.25rem 0.5rem;
   background-color: var(--tan-light);
+  flex-shrink: 0;
 }
 .qty-btn {
   width: 24px;
@@ -409,6 +430,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .qty-btn:hover { background-color: var(--forest); color: var(--paper); }
 .qty-value { min-width: 1.2rem; text-align: center; font-weight: 600; }
 
+.cart-item-subtotal {
+  font-weight: 700;
+  color: var(--brick);
+  min-width: 55px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
 .remove-link {
   background: none;
   border: none;
@@ -417,6 +446,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   font-weight: 600;
   cursor: pointer;
   padding: 0.3rem 0;
+  flex-shrink: 0;
 }
 .remove-link:hover { text-decoration: underline; }
 
@@ -431,22 +461,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .empty-cart .empty-icon { font-size: 3rem; display: block; margin-bottom: 1rem; }
 .empty-cart a { font-weight: 600; }
 
-.cart-heading-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 1.5rem;
-}
-.cart-heading-row .item-count { font-size: 0.9rem; color: #6b5c4a; }
-
 /* Order summary box on the right, styled as a matching card */
 .summary-box {
   border: 1px solid var(--tan);
   border-radius: 6px;
   padding: 1.75rem;
   background-color: #fff;
-  position: sticky;
-  top: 5.5rem;
 }
 .summary-box h2 {
   border-bottom: 1px solid var(--tan);
@@ -484,6 +504,25 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 .summary-box .form-group { margin-bottom: 1rem; }
 .summary-box .btn { width: 100%; text-align: center; margin-top: 0.5rem; }
+
+/* Above 700px there's enough room to keep quantity/subtotal/remove on
+   one line, so hide the inline mobile price (the dedicated price column
+   isn't needed there since it's shown with the item info anyway) */
+@media (min-width: 701px) {
+  .cart-item-price { display: none; }
+}
+
+/* Below 700px: stack the actions group onto its own full-width row,
+   spread out evenly, instead of cramming next to the title */
+@media (max-width: 700px) {
+  .cart-item-actions {
+    width: 100%;
+    margin-left: 0;
+    justify-content: space-between;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--tan-light);
+  }
+}
 
 /* ==========================================================================
    ABOUT PAGE
@@ -780,6 +819,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .book-grid { grid-template-columns: 1fr; }
   .gallery-grid { grid-template-columns: repeat(2, 1fr); }
   .carousel-slide { aspect-ratio: 4 / 3; }
-  .cart-card { padding: 1rem; }
+  .cart-item { padding: 0.85rem; }
   .summary-box { padding: 1.25rem; }
 }

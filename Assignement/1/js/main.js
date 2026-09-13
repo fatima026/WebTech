@@ -142,66 +142,61 @@ function setupAddToCart() {
 
 /* ---------- Cart page: render items, quantity controls, totals ---------- */
 function setupCartPage() {
-  const cartBody = document.getElementById('cartBody');
-  if (!cartBody) return; // not on the cart page
+  const cartList = document.getElementById('cartList');
+  if (!cartList) return; // not on the cart page
 
   renderCart();
 
   function renderCart() {
     const cart = getCart();
     const emptyMessage = document.getElementById('emptyCartMessage');
-    const cartTable = document.getElementById('cartTable');
     const checkoutSection = document.getElementById('checkoutSection');
 
     if (cart.length === 0) {
-      // Nothing in the cart: hide the table/checkout, show a friendly message
+      // Nothing in the cart: hide the list/checkout, show a friendly message
       emptyMessage.style.display = 'block';
-      document.querySelector('.cart-card').style.display = 'none';
+      cartList.style.display = 'none';
       checkoutSection.style.display = 'none';
       document.getElementById('cartItemCount').textContent = '';
       return;
     }
 
     emptyMessage.style.display = 'none';
-    document.querySelector('.cart-card').style.display = 'block';
+    cartList.style.display = 'flex';
     checkoutSection.style.display = 'block';
 
-    // Rebuild the table rows from scratch each time the cart changes
-    cartBody.innerHTML = '';
+    // Rebuild the item cards from scratch each time the cart changes
+    cartList.innerHTML = '';
     let subtotal = 0;
     let totalItems = 0;
-
-    // Cycle through warm tone classes as a fallback background while the image loads
-    const coverTones = ['tone-1', 'tone-2', 'tone-3', 'tone-4'];
 
     cart.forEach((item, index) => {
       const lineTotal = item.price * item.qty;
       subtotal += lineTotal;
       totalItems += item.qty;
 
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>
-          <div class="cart-item-row">
-            <img src="${item.image}" alt="${item.title} cover" class="cart-item-cover ${coverTones[index % coverTones.length]}">
-            <div>
-              <div class="cart-item-name">${item.title}</div>
-              <div class="cart-item-author">${item.author}</div>
-            </div>
-          </div>
-        </td>
-        <td class="cart-item-price">$${item.price.toFixed(2)}</td>
-        <td>
+      // Each item is its own flex row (see .cart-item in the CSS) so it can
+      // wrap onto multiple lines on small screens instead of overflowing
+      const card = document.createElement('div');
+      card.className = 'cart-item';
+      card.innerHTML = `
+        <img src="${item.image}" alt="${item.title} cover" class="cart-item-cover">
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.title}</div>
+          <div class="cart-item-author">${item.author}</div>
+          <div class="cart-item-price">$${item.price.toFixed(2)} each</div>
+        </div>
+        <div class="cart-item-actions">
           <div class="qty-controls">
             <button class="qty-btn" data-action="decrease" data-index="${index}" aria-label="Decrease quantity">−</button>
             <span class="qty-value">${item.qty}</span>
             <button class="qty-btn" data-action="increase" data-index="${index}" aria-label="Increase quantity">+</button>
           </div>
-        </td>
-        <td class="cart-item-subtotal">$${lineTotal.toFixed(2)}</td>
-        <td><button class="remove-link" data-index="${index}">Remove</button></td>
+          <span class="cart-item-subtotal">$${lineTotal.toFixed(2)}</span>
+          <button class="remove-link" data-index="${index}">Remove</button>
+        </div>
       `;
-      cartBody.appendChild(row);
+      cartList.appendChild(card);
     });
 
     document.getElementById('cartItemCount').textContent =
@@ -223,7 +218,7 @@ function setupCartPage() {
     }
 
     // Wire up the +, -, and Remove buttons for this render
-    cartBody.querySelectorAll('.qty-btn').forEach(btn => {
+    cartList.querySelectorAll('.qty-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const cart = getCart();
         const i = parseInt(btn.dataset.index, 10);
@@ -241,7 +236,7 @@ function setupCartPage() {
       });
     });
 
-    cartBody.querySelectorAll('.remove-link').forEach(btn => {
+    cartList.querySelectorAll('.remove-link').forEach(btn => {
       btn.addEventListener('click', () => {
         const cart = getCart();
         cart.splice(parseInt(btn.dataset.index, 10), 1);
@@ -292,9 +287,9 @@ function setupCheckoutForm() {
       form.reset();
       saveCart([]); // order placed, so empty the cart
 
-      // Hide the cart table/checkout form, but keep the success message visible
+      // Hide the cart list/checkout form, but keep the success message visible
       document.getElementById('emptyCartMessage').style.display = 'none';
-      document.querySelector('.cart-card').style.display = 'none';
+      document.getElementById('cartList').style.display = 'none';
       document.getElementById('cartItemCount').textContent = '';
       document.getElementById('checkoutForm').style.display = 'none';
 

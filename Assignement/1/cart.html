@@ -15,7 +15,7 @@
     <section class="section">
       <div class="container cart-layout">
 
-        <!-- Left: cart items table -->
+        <!-- Left: cart items -->
         <div>
           <div class="cart-heading-row">
             <div>
@@ -32,21 +32,9 @@
             <a href="books.html">Browse the collection →</a>
           </div>
 
-          <div class="cart-card">
-            <table class="cart-table" id="cartTable">
-              <thead>
-                <tr>
-                  <th>Book</th>
-                  <th>Price</th>
-                  <th>Quantity</th>
-                  <th>Subtotal</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <!-- Rows are built by JS from whatever is saved in the cart -->
-              <tbody id="cartBody"></tbody>
-            </table>
-          </div>
+          <!-- Each cart item is rendered as a self-contained flexible row (built by JS),
+               not a table, so it can wrap freely on small screens instead of overflowing -->
+          <div class="cart-list" id="cartList"></div>
         </div>
 
         <!-- Right: order summary + checkout form -->
@@ -77,7 +65,7 @@
             <!-- This form sends the order details straight to our email via FormSubmit -->
             <form id="checkoutForm" action="https://formsubmit.co/bcsf24a026@pucit.edu.pk" method="POST" novalidate>
 
-              <!-- FormSubmit settings: skip their captcaptcha page and set the email subject -->
+              <!-- FormSubmit settings: skip their captcha page and set the email subject -->
               <input type="hidden" name="_subject" value="New BookHaven order">
               <input type="hidden" name="_captcha" value="false">
 
