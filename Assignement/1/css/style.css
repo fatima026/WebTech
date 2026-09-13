@@ -112,7 +112,8 @@ a:hover { color: var(--brass); }
 
 h1, h2, h3, h4 {
   font-family: var(--display);
-  color: var(--ink);
+  /* color: var(--ink); */
+  color: #673700;
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.021em;
