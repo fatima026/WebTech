@@ -64,7 +64,7 @@ const button4 = document.querySelector("#butt4")
 const result4 = document.querySelector("#result4")
 
 button4.addEventListener("click", function(){
-    const students = ["Ali", "Ahmed", "Sara"]
+    const students = ["Fatima", "Ahmad", "Adeesha"]
     let names = ""
     students.forEach(function(student){
         names = names + student + "<br>"
@@ -77,7 +77,7 @@ const button5 = document.querySelector("#butt5")
 const result5 = document.querySelector("#result5")
 
 button5.addEventListener("click", function(){
-    const marks = [65, 72, 80, 55, 90, 68]
+    const marks = [65, 79, 87, 55, 93, 68]
     const highMarks = marks.filter(function(mark){
         return mark > 70
     })
