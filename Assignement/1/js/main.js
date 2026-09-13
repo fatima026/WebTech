@@ -289,13 +289,21 @@ function setupCheckoutForm() {
       body: new FormData(form),
       headers: { 'Accept': 'application/json' }
     }).finally(() => {
-      document.getElementById('checkoutSuccess').classList.add('visible');
       form.reset();
       saveCart([]); // order placed, so empty the cart
-      setupCartPage(); // re-render the (now empty) cart
+
+      // Hide the cart table/checkout form, but keep the success message visible
+      document.getElementById('emptyCartMessage').style.display = 'none';
+      document.querySelector('.cart-card').style.display = 'none';
+      document.getElementById('cartItemCount').textContent = '';
+      document.getElementById('checkoutForm').style.display = 'none';
+
+      const successBanner = document.getElementById('checkoutSuccess');
+      successBanner.classList.add('visible');
 
       setTimeout(() => {
-        document.getElementById('checkoutSuccess').classList.remove('visible');
+        successBanner.classList.remove('visible');
+        setupCartPage(); // now safe to fully re-render the (empty) cart view
       }, 6000);
     });
   });
