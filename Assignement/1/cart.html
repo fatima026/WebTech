@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BookHaven — Cart</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="cart">
+
+  <div id="header-placeholder"></div>
+  <div id="nav-placeholder"></div>
+
+  <main>
+    <section class="section">
+      <div class="container cart-layout">
+
+        <!-- Left: cart items table -->
+        <div>
+          <h1 class="section-title">Your cart</h1>
+          <p class="section-lead">Items you've added from the Books page.</p>
+
+          <!-- Shown only when the cart has no items -->
+          <div class="empty-cart" id="emptyCartMessage">
+            <p>Your cart is empty.</p>
+            <a href="books.html">Browse the collection →</a>
+          </div>
+
+          <table class="cart-table" id="cartTable">
+            <thead>
+              <tr>
+                <th>Book</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th></th>
+              </tr>
+            </thead>
+            <!-- Rows are built by JS from whatever is saved in the cart -->
+            <tbody id="cartBody"></tbody>
+          </table>
+        </div>
+
+        <!-- Right: order summary + checkout form -->
+        <div id="checkoutSection">
+          <div class="summary-box">
+            <h2 class="section-title" style="font-size:1.4rem;">Order summary</h2>
+
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span id="summarySubtotal">$0.00</span>
+            </div>
+            <div class="summary-row">
+              <span>Delivery</span>
+              <span id="summaryDelivery">$0.00</span>
+            </div>
+            <div class="summary-row total">
+              <span>Total</span>
+              <span id="summaryTotal">$0.00</span>
+            </div>
+
+            <p class="cod-note">Payment method: Cash on delivery. You'll pay when your order arrives.</p>
+
+            <!-- Success message shown after a valid checkout submission -->
+            <div class="form-success" id="checkoutSuccess">
+              We received your order and will contact you soon regarding confirmation.
+            </div>
+
+            <!-- This form sends the order details straight to our email via FormSubmit -->
+            <form id="checkoutForm" action="https://formsubmit.co/bcsf24a026@pucit.edu.pk" method="POST" novalidate>
+
+              <!-- FormSubmit settings: skip their captcaptcha page and set the email subject -->
+              <input type="hidden" name="_subject" value="New BookHaven order">
+              <input type="hidden" name="_captcha" value="false">
+
+              <!-- Filled in automatically by JS with a plain-text list of items and totals -->
+              <input type="hidden" name="Order details" id="orderSummaryField">
+
+              <div class="form-group">
+                <label for="custName">Full name</label>
+                <input type="text" id="custName" name="Name" placeholder="Your name">
+                <p class="error-msg">Please enter your name.</p>
+              </div>
+
+              <div class="form-group">
+                <label for="custEmail">Email address</label>
+                <input type="email" id="custEmail" name="Email" placeholder="you@example.com">
+                <p class="error-msg">Please enter a valid email address.</p>
+              </div>
+
+              <div class="form-group">
+                <label for="custWhatsapp">WhatsApp number</label>
+                <input type="tel" id="custWhatsapp" name="WhatsApp" placeholder="03xx xxxxxxx">
+                <p class="error-msg">Please enter a valid WhatsApp number.</p>
+              </div>
+
+              <div class="form-group">
+                <label for="custAddress">Delivery address</label>
+                <textarea id="custAddress" name="Delivery address" placeholder="House, street, city"></textarea>
+                <p class="error-msg">Please enter your full delivery address.</p>
+              </div>
+
+              <button type="submit" class="btn">Place order (Cash on delivery)</button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

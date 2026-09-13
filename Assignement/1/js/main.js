@@ -50,6 +50,9 @@ function setupNav() {
       link.classList.add('active');
     }
   });
+
+  // Show how many items are currently in the cart next to the "Cart" link
+  updateCartBadge();
 }
 
 /* ---------- 3. Books page: category filter + add-to-cart buttons ---------- */
@@ -75,11 +78,53 @@ function setupBookFiltering() {
   });
 }
 
+/* ---------- The cart itself: a simple array saved in localStorage so it
+   survives moving between pages. Every cart item looks like:
+   { title, author, price, qty } ---------- */
+function getCart() {
+  const stored = localStorage.getItem('bookhavenCart');
+  return stored ? JSON.parse(stored) : [];
+}
+
+function saveCart(cart) {
+  localStorage.setItem('bookhavenCart', JSON.stringify(cart));
+  updateCartBadge();
+}
+
+// Updates the little number next to "Cart" in the nav bar
+function updateCartBadge() {
+  const badge = document.getElementById('navCartCount');
+  if (!badge) return;
+  const cart = getCart();
+  const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+  badge.textContent = totalItems > 0 ? totalItems : '';
+}
+
+function addToCart(title, author, price) {
+  const cart = getCart();
+  const existing = cart.find(item => item.title === title);
+
+  if (existing) {
+    existing.qty += 1; // already in cart, just bump the quantity
+  } else {
+    cart.push({ title, author, price, qty: 1 });
+  }
+
+  saveCart(cart);
+}
+
 function setupAddToCart() {
   const addButtons = document.querySelectorAll('.add-btn');
 
   addButtons.forEach(button => {
     button.addEventListener('click', () => {
+      const card = button.closest('.book-card');
+      const title = card.querySelector('h3').textContent;
+      const author = card.querySelector('.book-author').textContent;
+      const price = parseFloat(card.querySelector('.book-price').textContent.replace('$', ''));
+
+      addToCart(title, author, price);
+
       // Simple visual feedback: swap the label and lock the button briefly
       button.textContent = 'Added ✓';
       button.classList.add('added');
@@ -90,6 +135,153 @@ function setupAddToCart() {
         button.classList.remove('added');
         button.disabled = false;
       }, 1500);
+    });
+  });
+}
+
+/* ---------- Cart page: render items, quantity controls, totals ---------- */
+function setupCartPage() {
+  const cartBody = document.getElementById('cartBody');
+  if (!cartBody) return; // not on the cart page
+
+  renderCart();
+
+  function renderCart() {
+    const cart = getCart();
+    const emptyMessage = document.getElementById('emptyCartMessage');
+    const cartTable = document.getElementById('cartTable');
+    const checkoutSection = document.getElementById('checkoutSection');
+
+    if (cart.length === 0) {
+      // Nothing in the cart: hide the table/checkout, show a friendly message
+      emptyMessage.style.display = 'block';
+      cartTable.style.display = 'none';
+      checkoutSection.style.display = 'none';
+      return;
+    }
+
+    emptyMessage.style.display = 'none';
+    cartTable.style.display = 'table';
+    checkoutSection.style.display = 'block';
+
+    // Rebuild the table rows from scratch each time the cart changes
+    cartBody.innerHTML = '';
+    let subtotal = 0;
+
+    cart.forEach((item, index) => {
+      const lineTotal = item.price * item.qty;
+      subtotal += lineTotal;
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>
+          <div class="cart-item-name">${item.title}</div>
+          <div class="cart-item-author">${item.author}</div>
+        </td>
+        <td>$${item.price.toFixed(2)}</td>
+        <td>
+          <div class="qty-controls">
+            <button class="qty-btn" data-action="decrease" data-index="${index}">−</button>
+            <span>${item.qty}</span>
+            <button class="qty-btn" data-action="increase" data-index="${index}">+</button>
+          </div>
+        </td>
+        <td>$${lineTotal.toFixed(2)}</td>
+        <td><button class="remove-link" data-index="${index}">Remove</button></td>
+      `;
+      cartBody.appendChild(row);
+    });
+
+    // Update the summary numbers (flat delivery fee kept simple)
+    const deliveryFee = 3.00;
+    document.getElementById('summarySubtotal').textContent = `$${subtotal.toFixed(2)}`;
+    document.getElementById('summaryDelivery').textContent = `$${deliveryFee.toFixed(2)}`;
+    document.getElementById('summaryTotal').textContent = `$${(subtotal + deliveryFee).toFixed(2)}`;
+
+    // Also keep the hidden order-summary field (sent to formsubmit) up to date
+    const orderSummaryField = document.getElementById('orderSummaryField');
+    if (orderSummaryField) {
+      const lines = cart.map(item => `${item.title} x${item.qty} = $${(item.price * item.qty).toFixed(2)}`);
+      lines.push(`Delivery: $${deliveryFee.toFixed(2)}`);
+      lines.push(`Total: $${(subtotal + deliveryFee).toFixed(2)}`);
+      orderSummaryField.value = lines.join('\n');
+    }
+
+    // Wire up the +, -, and Remove buttons for this render
+    cartBody.querySelectorAll('.qty-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cart = getCart();
+        const i = parseInt(btn.dataset.index, 10);
+
+        if (btn.dataset.action === 'increase') {
+          cart[i].qty += 1;
+        } else if (cart[i].qty > 1) {
+          cart[i].qty -= 1;
+        } else {
+          cart.splice(i, 1); // quantity would drop to 0, so remove the item
+        }
+
+        saveCart(cart);
+        renderCart();
+      });
+    });
+
+    cartBody.querySelectorAll('.remove-link').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cart = getCart();
+        cart.splice(parseInt(btn.dataset.index, 10), 1);
+        saveCart(cart);
+        renderCart();
+      });
+    });
+  }
+
+  setupCheckoutForm();
+}
+
+/* ---------- Cart page: checkout form validation + submission ---------- */
+function setupCheckoutForm() {
+  const form = document.getElementById('checkoutForm');
+  if (!form) return;
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault(); // validate first, only send once everything checks out
+
+    let formIsValid = true;
+
+    const nameField = document.getElementById('custName');
+    const emailField = document.getElementById('custEmail');
+    const whatsappField = document.getElementById('custWhatsapp');
+    const addressField = document.getElementById('custAddress');
+
+    formIsValid = validateField(nameField, nameField.value.trim().length > 0) && formIsValid;
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    formIsValid = validateField(emailField, emailPattern.test(emailField.value.trim())) && formIsValid;
+
+    // WhatsApp: just require at least 10 digits (keeps it simple, no strict country format)
+    const digitsOnly = whatsappField.value.replace(/\D/g, '');
+    formIsValid = validateField(whatsappField, digitsOnly.length >= 10) && formIsValid;
+
+    formIsValid = validateField(addressField, addressField.value.trim().length >= 10) && formIsValid;
+
+    if (!formIsValid) return;
+
+    // Send the order to FormSubmit in the background, so we can show our own
+    // success message instead of redirecting away to FormSubmit's page
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).finally(() => {
+      document.getElementById('checkoutSuccess').classList.add('visible');
+      form.reset();
+      saveCart([]); // order placed, so empty the cart
+      setupCartPage(); // re-render the (now empty) cart
+
+      setTimeout(() => {
+        document.getElementById('checkoutSuccess').classList.remove('visible');
+      }, 6000);
     });
   });
 }
@@ -212,4 +404,5 @@ document.addEventListener('DOMContentLoaded', () => {
   setupCarousel();
   setupGalleryModal();
   setupContactForm();
+  setupCartPage();
 });
