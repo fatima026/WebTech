@@ -295,7 +295,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 .book-cover {
   width: 100%;
-  height: 220px;
+  aspect-ratio: 3 / 4; /* matches the real image dimensions: 896x1200 */
   border-radius: 4px;
   margin-bottom: 0.9rem;
   object-fit: cover; /* fills the box without distorting the image */
@@ -366,7 +366,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .cart-item-row { display: flex; align-items: center; gap: 1rem; }
 .cart-item-cover {
   width: 48px;
-  height: 60px;
+  aspect-ratio: 3 / 4; /* matches the real image dimensions: 896x1200 */
   border-radius: 4px;
   flex-shrink: 0;
   object-fit: cover;
@@ -555,7 +555,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 .carousel-slide {
   min-width: 100%;
-  height: 320px;
+  aspect-ratio: 4 / 3; /* matches the real image dimensions: 1200x896 */
   position: relative; /* lets the caption sit on top of the image */
 }
 .carousel-slide img {
@@ -598,7 +598,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   gap: 1rem;
 }
 .gallery-item {
-  height: 140px;
+  aspect-ratio: 4 / 3; /* matches the real image dimensions: 1200x896 */
   border-radius: 4px;
   overflow: hidden;
   cursor: pointer;
@@ -775,5 +775,5 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .highlights { grid-template-columns: 1fr; }
   .book-grid { grid-template-columns: 1fr; }
   .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-  .carousel-slide { height: 220px; }
+  .carousel-slide { aspect-ratio: 4 / 3; }
 }
